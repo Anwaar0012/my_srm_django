@@ -1,0 +1,113 @@
+<style>
+  .active-link {
+    background-color: #28a745 !important;
+    /* Dark background color */
+    color: #ffffff !important;
+    /* White text color */
+    border-radius: 0.25rem;
+    /* Rounded border */
+  }
+
+  /* Change navbar background color */
+    .navbar-custom {
+      background-color: black; /* Change to your desired color */
+    }
+
+    /* Change navbar link color */
+    .navbar-custom .navbar-nav .nav-link {
+      color: white; /* Change to your desired color */
+    }
+
+    /* Change toggler button color */
+    .navbar-custom .navbar-toggler-icon {
+      background-color: white; /* Change to your desired color */
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+{% comment %} style="background-color: #E7ECE9;" {% endcomment %}
+{% comment %} </div> {% endcomment %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-custom" >
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Sh.A.Rehman Traders</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      {% if request.user.is_authenticated%}
+      <ul class="navbar-nav">
+        <li class="nav-item {% block homeactive %}{% endblock homeactive%}">
+          <a class="nav-link {% if request.path == '/' %}active-link{% endif %} " href="{% url 'index' %}">Home</a>
+        </li>
+        <li class="nav-item {% block manageractive %}{% endblock manageractive%}">
+          <a class="nav-link {% if request.path == '/myapp/managers/' %}active-link{% endif %}"
+            href="{% url 'managers' %}">Managers</a>
+        </li>
+        <li class="nav-item" {% block daysactive %}{% endblock daysactive%}>
+          <a class="nav-link {% if request.path == '/myapp/days/' %}active-link{% endif %}"
+            href="{% url 'days' %}">Days</a>
+        </li>
+        <li class="nav-item" {% block salespersonsactive %}{% endblock salespersonsactive%}>
+          <a class="nav-link {% if request.path == '/myapp/sales_persons/' %}active-link{% endif %}"
+            href="{% url 'sales_person_list' %}">Sales Persons</a>
+        </li>
+        <li class="nav-item {% block routesactive %}{% endblock routesactive%} ">
+          <a class="nav-link {% if request.path == '/myapp/routes/' %}active-link{% endif %}"
+            href="{% url 'route_list' %}">Routes</a>
+        </li>
+        <li class="nav-item {% block shopsactive %}{% endblock shopsactive%}">
+          <a class="nav-link {% if request.path == '/myapp/shops/' %}active-link{% endif %}"
+            href="{% url 'shop_list' %}">Shops</a>
+        </li>
+        <li class="nav-item {% block routingsactive %}{% endblock routingsactive%} ">
+          <a class="nav-link {% if request.path == '/myapp/routings/' %}active-link{% endif %}"
+            href="{% url 'routing_list' %}">Routings</a>
+        </li>
+        <li class="nav-item {% block productactive %}{% endblock productactive%}">
+          <a class="nav-link {% if request.path == '/myapp/products/' %}active-link{% endif %}"
+            href="{% url 'product_list' %}">Products</a>
+        </li>
+        <li class="nav-item {% block transactionsactive %}{% endblock transactionsactive%}">
+          <a class="nav-link {% if request.path == '/myapp/transactions/' %}active-link{% endif %}"
+            href="{% url 'transaction_list' %}">Transaction List</a>
+        </li>
+        <li class="nav-item {% block claimactive %}{% endblock claimactive%}">
+          <a class="nav-link {% if request.path == '/myapp/claims/' %}active-link{% endif %}"
+            href="{% url 'claim_list' %}">Claims</a>
+        </li>
+        <li class="nav-item">
+          <a href="/invoice" role="button" class="btn btn-outline-success my-2 mx-2 my-sm-0" type="submit">Sales</a>
+        </li>
+        <li class="nav-item">
+          <a href="/invoice/recovery-list/" role="button" class="btn btn-outline-success my-2 mx-2 my-sm-0" type="submit">Payments</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Reports
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/invoice/gen-report-invoice">Transaction</a></li>
+            <li><a class="dropdown-item" href="/invoice/gen-report-shops">Shops</a></li>
+            <li><a class="dropdown-item" href="/invoice/gen-report-recovery">Recovery</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'logout' %}" role="button" class="btn btn-outline-success my-2 my-sm-0"
+            type="submit">Logout</a>
+        </li>
+
+      </ul>
+      {% else %}
+      
+          <a href="{% url 'login' %}" role="button" target="_blank" class="btn btn-outline-success mx-4 my-2 my-sm-0"
+            type="submit">Login</a>
+
+
+          <a href="{% url 'signup' %}" role="button" target="_blank" class="btn btn-outline-success my-2 my-sm-0"
+            type="submit">Signup</a> 
+ 
+      {% endif %}
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+<!-- {% block daysactive %} active {% endblock daysactive %} -->
+
+{% block content %}
+<div class="container my-3">
+    <h3>Recovery</h3>
+    <form action={% url 'invoice:create-recovery' customer_name=customer_name %} method="post">
+        {% csrf_token %}
+  <div class="form-group">
+    <label for="new_paid_amount">Payment Recovered Amount</label>
+    <input type="number" class="form-control" id="new_paid_amount" name='new_paid_amount' placeholder="Enter Recovered Amount here">
+  </div>
+    <button type="submit" class="btn btn-success">Submit</button>
+</form>
+</div>
+{% endblock %}

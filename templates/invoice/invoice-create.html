@@ -1,0 +1,369 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero is-fullheight">
+    <div class="container">
+        <h5 class="heading" style="background-color:#008080; color:#fff; padding:5px; text-align:center; font-size:1rem">Create Invoice  - Fill Below Form </h5>
+        <div class="card">
+            {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% elif message.tags == 'warning' %}
+                    <div class="alert alert-warning" role="alert">
+                        {{ message }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+            <div class="hero-body">
+                <form class="" method="POST" action="">
+                    {% csrf_token %}
+                    <div class="row justify-content-center my-3">
+                        <div class="col-md-3 mx-2">
+                            <h6> Customer </h6>
+                            {{ form.customer }}
+                        </div>
+                        <div class="col-md-3 mx-2">
+                            <h6>Customer Contact (if any)</h6>
+                            {{ form.customer_email }}
+                        </div>
+                        <div class="col-md-3 mx-2">
+                            <h6>Billing Address</h6>
+                            {{ form.billing_address }}
+                        </div>
+                    </div>
+                    <div class="row justify-content-center my-3">
+                        <div>
+                            <h6>Sale Type</h6>
+                            {{form.sale_types}}
+                        </div>
+                        <div class="col-md-3 mx-2">
+                            <h6>Due_Date</h6>
+                            {{ form.due_date }}
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Routing</h6>
+                            {{ form.routing }}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row justify-content-center my-3">
+                        <div class="col-md-3 mx-2">
+                            <h6>Sales Person</h6>
+                            {{ form.salesperson }}
+                        </div>
+                        <div class="col-md-3 mx-2">
+                            <h6>Manager</h6>
+                            {{ form.manager }}
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Product/Service</th>
+                                <th>QTY</th>
+                                <th>RATE</th>
+                                <th>AMOUNT$</th>
+                                <th>ADD</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ formset.management_form }}
+                            {% for form in formset %}
+                            <tr>
+                                <td>{{ form.service }}</td>
+                                <td required>{{ form.quantity }}</td>
+                                <td>{{ form.rate }}</td>
+                                <td class="amount"></td>
+                                <td>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-success add-form-row ">+</button>&nbsp;
+                                        <button class="btn btn-warning remove-form-row" style="display: none;">-</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="row spacer">
+                        <div class="col-md-4 offset-md-2">
+                            <button type="submit" class="btn btn-info btn-block">Create</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md">
+                            <h3 style="float:right;" class="title">Grand Total(Rs.): <span id="total"></span></h3>
+                        </div>
+                        {% comment %} <div class="col-md">
+                            <h3 class="title">Paid_Amount(Rs.): <span id="paid_total"></span>{{form.paid_amount}}</h3>
+                        </div> {% endcomment %}
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="loadingSpinner" style="display: none;">
+            <!-- Loading spinner or message -->
+            <p>Loading...</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+{% block custom_js %}
+
+{% if messages %}
+    <script>
+        // Wait for the page to load
+        window.onload = function() {
+            // Check if the success message is present
+            if ('{{ request.session.show_success_message }}' === 'True') {
+                // Wait for 5 seconds and then redirect
+                setTimeout(function() {
+                    window.location.href = '/invoice/'; // Redirect to the specified URL
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        };
+    </script>
+{% endif %}
+
+
+<script>
+$(document).ready(function() {
+    $('#invoiceForm').submit(function(event) {
+        event.preventDefault(); // Prevent form submission
+        
+        // Show loading spinner
+        $('#loadingSpinner').show();
+        
+        // Send AJAX request to create invoice
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: $(this).serialize(),
+            success: function(response) {
+                // Hide loading spinner
+                $('#loadingSpinner').hide();
+                
+                if (response.success) {
+                    // Display success message or redirect user
+                } else {
+                    // Display error message
+                }
+            },
+            error: function(xhr, status, error) {
+                // Hide loading spinner
+                $('#loadingSpinner').hide();
+                
+                // Display error message
+            }
+        });
+    });
+});
+</script>
+
+<!-- for getting customer details -->
+<script>
+    document.getElementById('id_customer').addEventListener('change', function() {
+        var shop_name = this.value;
+        
+        // Encode shop_name to handle spaces and special characters
+        var encodedShopName = encodeURIComponent(shop_name);
+
+        
+        // Make AJAX request to fetch customer details
+        fetch(`/invoice/get-customer-details/${shop_name}/`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            // Populate billing address and contact fields with retrieved data
+            document.getElementById('billing_address').value = data.address;
+            document.getElementById('contact').value = data.owner_number;
+          })
+          .catch(error => {
+            console.error('Error fetching customer details:', error);
+            // Optionally, display an error message to the user
+          });
+      });
+      
+</script>
+{% comment %} for customer detail part 2 {% endcomment %}
+{% comment %} <script>
+    document.getElementById('id_customer').addEventListener('change', function() {
+        var shop_name = this.value;
+        
+        // Encode only the shop_name part
+        var encodedShopName = encodeURIComponent(shop_name);
+    
+        // Construct the URL with the encoded shop_name
+        var url = `/invoice/get-customer-details/${encodedShopName}/`;
+    
+        // Make AJAX request to fetch customer details
+        fetch(url)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            // Populate billing address and contact fields with retrieved data
+            document.getElementById('billing_address').value = data.address;
+            document.getElementById('contact').value = data.owner_number;
+          })
+          .catch(error => {
+            console.error('Error fetching customer details:', error);
+            // Optionally, display an error message to the user
+          });
+    });
+</script> {% endcomment %}
+
+
+<!-- {===4 FOR GETING RATE AND POPULATE RATE BY SELECTING PRODUCTclassname ====== -->
+<script>
+    // Function to handle change event on product select
+    function handleProductChange(event) {
+        console.log("Change event triggered");
+        var product_name = event.target.value;
+        var encodedProductName = encodeURIComponent(product_name);
+
+        fetch(`/invoice/get-product-rate/${encodedProductName}/`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Find the rate input relative to the changed product select
+                var rateInput = event.target.parentElement.parentElement.querySelector('.myrate');
+                rateInput.value = data.rate;
+                console.log("Rate input updated");
+            })
+            .catch(error => {
+                console.error('Error fetching product rate:', error);
+                // Optionally, display an error message to the user
+            });
+    }
+
+    // Event listener callback function
+    function eventListenerCallback(event) {
+        console.log("Change event listener triggered");
+        if (event.target.classList.contains('product-select')) {
+            handleProductChange(event);
+        }
+    }
+
+    // Function to attach event listener
+    function attachEventListener() {
+        console.log("Attaching event listener");
+        document.body.addEventListener('change', eventListenerCallback);
+    }
+
+    // Attach event listener initially
+    attachEventListener();
+</script>
+
+
+ <!-- CALCULATING TOTAL   -->
+<script type="text/javascript">
+    $('table input').on("input", function () {
+        var total = []
+        var $tr = $(this).closest('tr');
+        var textValue1 = $("input.rate", $tr).val();
+        var textValue2 = $('input.quantity', $tr).val();
+        amt = textValue1 * textValue2;
+        // console.log(amt);
+        $('.amount', $tr).html(amt);
+        calc_total();
+    });
+
+    function calc_total() {
+        var sum = 0;
+        $(".amount").each(function () {
+            sum += parseFloat($(this).text());
+        });
+        console.log(sum);
+        $('#total').text(sum);
+    }
+</script>  
+
+<!-- previous working cloning Functionality  -->
+<script type="text/javascript">
+    function updateElementIndex(el, prefix, ndx) {
+        var id_regex = new RegExp('(' + prefix + '-\\d+)');
+        var replacement = prefix + '-' + ndx;
+        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+        if (el.id) el.id = el.id.replace(id_regex, replacement);
+        if (el.name) el.name = el.name.replace(id_regex, replacement);
+    }
+    function cloneMore(selector, prefix) {
+        var newElement = $(selector).clone(true);
+        console.log(newElement);
+        var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+        newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function () {
+            var name = $(this).attr('name')
+            if (name) {
+                name = name.replace('-' + (total - 1) + '-', '-' + total + '-');
+                var id = 'id_' + name;
+                $(this).attr({ 'name': name, 'id': id }).val('').removeAttr('checked');
+            }
+        });
+        newElement.find('label').each(function () {
+            var forValue = $(this).attr('for');
+            if (forValue) {
+                forValue = forValue.replace('-' + (total - 1) + '-', '-' + total + '-');
+                $(this).attr({ 'for': forValue });
+            }
+        });
+        total++;
+        $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+        $(selector).after(newElement);
+        // $("div.form-row.button.is-primary").not(":last").hide();
+        // var conditionRow = $('.form-row:not(:last)');
+        // conditionRow.find('.button.is-primary')
+        // .hide()
+        // .removeClass('btn-success').addClass('btn-danger')
+        // .removeClass('add-form-row').addClass('remove-form-row')
+        // .html('-');
+        return false; 
+    }
+    function deleteForm(prefix, btn) {
+        var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+        if (total > 1) {
+            btn.closest('.form-row').remove();
+            var forms = $('.form-row');
+            $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+            for (var i = 0, formCount = forms.length; i < formCount; i++) {
+                $(forms.get(i)).find(':input').each(function () {
+                    updateElementIndex(this, prefix, i);
+                });
+            }
+        }
+        return false;
+    } 
+    $(document).on('click', '.add-form-row', function (e) {
+        e.preventDefault();
+        cloneMore('table tr:last', 'form');
+        return false;
+    });
+    $(document).on('click', '.remove-form-row', function (e) {
+        e.preventDefault();
+        deleteForm('form', $(this));
+        return false;
+    }); 
+</script> 
+
+{% endblock %}

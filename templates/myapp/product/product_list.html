@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block productactive %} active {% endblock productactive %}
+{% block extra_head %} <style>
+    /* Custom styling for first and last buttons */
+    .paginate_button.first,
+    .paginate_button.last {
+        background-color: #b5f795; /* Change to your desired color */
+        color: #fff; /* Change to your desired text color */
+        border-color: #007bff; /* Change to your desired border color */
+    }
+</style>{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h6 class="card-title bg-success text-white center text-center py-2">Available Products/items List </h6>
+    <!-- Link to Add Manager page -->
+    <a href="{% url 'add_product' %}" class="btn btn-primary mb-3">Add Product</a>
+
+
+    <!-- Table to display manager data -->
+    <div class="table-responsive">
+    <table id="product-table" class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Product Code</th>
+                <th>Product Name</th>
+                <th>crtn-Pcs</th>
+                <th>quantity</th>
+                <th>Rate</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dummy data -->
+            {% for product in products %} 
+            <tr>
+                <td>{{ product.id}} </td>
+                <td>{{ product.product_code }}</td>
+                <td>{{ product.product_name }}</td>
+                <td>{{ product.crtn_pcs }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.price }}</td>
+                <td><a href="{% url 'edit_product' product.id %}" class="btn btn-sm btn-primary">Edit</a></td>
+                <td><a href="{% url 'delete_product' product.id %}" class="btn btn-sm btn-danger">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+{% endblock %}
+{% block custom_js %}
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#product-table').DataTable({
+            "pagingType": "full_numbers", // Use full pagination controls
+            "pageLength": 10, // Show 10 entries per page
+            "lengthMenu": [10, 25, 50, 75, 100], // Entries per page options
+            "language": {
+                "paginate": {
+                    "previous": "«",
+                    "next": "»"
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

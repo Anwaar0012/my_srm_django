@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock title %}
+{% block content %}
+    <div class="container d-flex justify-content-center align-items-center vh-80">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="text-center">Login</h1>
+                <form method="post" action=".">
+                    {% csrf_token %}
+                    <!-- Render form fields individually -->
+                    {% for field in form %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in field.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+

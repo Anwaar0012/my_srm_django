@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 style="color: blue;">Edit/Update Invoice</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Messages div for displaying success or error messages -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} bg-warning" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                <div class="card-body">
+                    <form method="post" action={% url 'invoice:invoice-edit' id=invoice_id %} style="background-color: #f0f0f0; padding: 20px;">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="customer">Customer:</label>
+                            <input type="text" class="form-control" name="customer" value="{{ invoice.customer }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="customer_email">Contact No:</label>
+                            <input type="text" class="form-control" name="customer_email" value="{{ invoice.customer_email }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="billing_address">Billing Address:</label>
+                            <input type="text" class="form-control" name="billing_address" value="{{ invoice.billing_address }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Date:</label>
+                            <input type="date" class="form-control" name="date" value="{{ invoice.date|date:'Y-m-d' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="due_date">Due Date:</label>
+                            <input type="date" class="form-control" name="due_date" value="{{ invoice.due_date|date:'Y-m-d' }}">
+                        </div>
+                        {% comment %} <div class="form-group">
+                            <label for="message">Message:</label>
+                            <input type="text" class="form-control" name="message" value="{{ invoice.message }}">
+                        </div> {% endcomment %}
+                        <div class="form-group">
+                            <label for="salesperson">Salesperson:</label>
+                            <input type="text" class="form-control" name="salesperson" value="{{ invoice.salesperson }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="manager">Manager:</label>
+                            <input type="text" class="form-control" name="manager" value="{{ invoice.manager }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="routing">Routing:</label>
+                            <input type="text" class="form-control" name="routing" value="{{ invoice.routing }}">
+                        </div>
+                        {% comment %} <div class="form-group">
+                            <label for="total_amount">Total Amount:</label>
+                            <input type="number" class="form-control" name="total_amount" value="{{ invoice.total_amount }}">
+                        </div> {% endcomment %}
+                        {% comment %} <div class="form-group">
+                            <label for="paid_amount">Paid Amount:</label>
+                            <input type="number" class="form-control" name="paid_amount" value="{{ invoice.paid_amount }}">
+                        </div> {% endcomment %}
+                        {% comment %} <div class="form-group">
+                            <label for="balance">Balance:</label>
+                            <input type="number" class="form-control" name="balance" value="{{ invoice.balance }}">
+                        </div> {% endcomment %}
+                        {% comment %} <div class="form-group">
+                            <label for="previous_balance">Previous Balance:</label>
+                            <input type="number" class="form-control" name="previous_balance" value="{{ invoice.previous_balance }}">
+                        </div> {% endcomment %}
+                        <!-- Add fields for other attributes -->
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        {% comment %} <button type="submit" class="btn btn-success btn-block">Update</button> {% endcomment %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block custom_js %}
+
+    {% endblock %}

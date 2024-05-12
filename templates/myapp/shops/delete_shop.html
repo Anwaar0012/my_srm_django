@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+    <h2 style="color: blue;  margin-left:50px;">Delete shop</h2>
+</div>
+    <p style="margin:25px;">Are you sure you want to delete "{{ shop.name }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+
+        <button type="submit" class="btn btn-success btn-block">Delete</button>
+        <br>
+    </form>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

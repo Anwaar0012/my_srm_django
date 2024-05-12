@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                    <h6 style="font-size:1.5rem">View Invoices/Transactions</h6>
+                <div class="card-body">
+                    <a href="{% url 'invoice:invoice-create' %}" class="btn btn-lg btn-primary  mb-3">change later</a>
+                    <div class="table-responsive">
+                        <table id="invoicelist-table" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    {% comment %} <th></th> {% endcomment %}
+                                    <th>Invoice</th>
+                                    <th>Customer</th>
+                                    <th>Total Amount</th>
+                                    <th>View</th>
+                                    <th>Recovery</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% comment %} {% for invoice in invoices %} {% endcomment %}
+                                {% for customer_total in customer_totals %}
+                                <tr>
+                                    {% comment %} <td><input class="form-check-input" type="checkbox" value="{{ invoice.id }}" name="invoice_id" /></td> {% endcomment %}
+                                    <td>{{ customer_total.id }}</td> 
+                                    <td>{{ customer_total.customer }}</td>
+                                    <td>{{ customer_total.total_amount }}</td>
+                                    {% comment %} <td><a href="#" class="btn btn-sm btn-success">Make Payments</a></td>  {% endcomment %}
+                                    {% comment %} <td><a href="{% url 'invoice:create-recovery' id=invoice.id %}" class="btn btn-sm btn-success">Pay me</a></td>   {% endcomment %}
+                                    {% comment %} <td><a href="{% url 'invoice:invoice-edit' id=invoice.id %}" class="btn btn-sm btn-primary">Edit</a></td> 
+                                    <td><a href="{% url 'invoice:invoice-delete' id=invoice.id %}" class="btn btn-sm btn-danger">Delete</a></td> {% endcomment %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_js %}
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#invoicelist-table').DataTable({
+            "pagingType": "full_numbers", // Use full pagination controls
+            "lengthMenu": [10, 25, 50, 75, 100], // Entries per page options
+            "language": {
+                "paginate": {
+                    "previous": "«",
+                    "next": "»"
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

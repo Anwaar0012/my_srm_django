@@ -1,0 +1,35 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-custom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Sh.A.Rehman Traders</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <!-- Home -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Home</a>
+                </li>
+                <!-- Managers (Only visible to users with Manager role) -->
+                {% if request.user.groups.filter(name='Manager').exists %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'managers' %}">Managers</a>
+                </li>
+                {% endif %}
+                <!-- Days (Only visible to users with Manager or Salesperson role) -->
+                {% if request.user.groups.filter(name__in=['Manager', 'Salesperson']).exists %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'days' %}">Days</a>
+                </li>
+                {% endif %}
+                <!-- Other links... -->
+                <!-- Logout -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

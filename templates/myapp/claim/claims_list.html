@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block claimactive %} active {% endblock claimactive %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Link to Add Routing page -->
+    <a href="{% url 'add_claim' %}" class="btn btn-primary mb-3">Add Claim</a>
+
+    <!-- Table to display routings data -->
+    <table id="routingTable" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>date</th>
+                <th>details</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dummy data -->
+            {% for claim in claims  %}
+            <tr>
+                <td>{{claim.id}}</td>
+                <td>{{claim.date}}</td>
+                <td>{{claim.details}}</td>
+                <td>{{claim.amount}}</td>
+                <td>{{claim.status}}</td>
+
+                
+                <td><a href="{% url 'edit_claim' claim.id %}" class="btn btn-sm btn-primary">Edit</a></td>
+                <td><a href="{% url 'delete_claim' claim.id %}" class="btn btn-sm btn-danger">Delete</a></td>
+            </tr>
+            {% endfor %}
+           
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Include jQuery first -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<!-- Then include DataTables script -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+
+<!-- Finally, initialize DataTables -->
+<script>
+    $(document).ready(function() {
+        $('#routingTable').DataTable({
+            "columnDefs": [
+                { "targets": [0, 1, 3, 4], "searchable": false }
+            ],
+            "language": {
+                "search": "Search by Category: "
+            },
+            "dom": 'lrtip'
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Lohout{% endblock title %}
+{% block content %}
+    <h1 class="text-lg">Logout</h1>
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <!-- as a paragraph  -->
+        Do you want logout
+        <button class="py-4 px-8 bg-teal-500 text-white rounded-xl">Logout</button>
+    </form>
+
+{% endblock content %}

@@ -1,0 +1,27 @@
+
+Sure, here's a template that displays the information you mentioned for the invoice and recovery:
+
+html
+Copy code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Finalized Transaction</title>
+</head>
+<body>
+    <h1>Finalized Transaction</h1>
+
+    <h2>Invoice Information</h2>
+    <p>Customer: {{ invoice.customer }}</p>
+    <p>Routing: {{ invoice.routing }}</p>
+    <p>Date: {{ invoice.date }}</p>
+    <p>Total Amount: {{ invoice.total_amount }}</p>
+
+    <h2>Recovery Information</h2>
+    <p>Amount Received: {{ recovery.amount_received }}</p>
+    <p>Received Date: {{ recovery.received_date }}</p>
+    <p>Balance: {{ recovery.balance }}</p>
+    <p>Previous Balance: {{ recovery.previous_balance }}</p>
+</body>
+</html>

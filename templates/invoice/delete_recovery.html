@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 style="color: blue;">Delete Recovery</h2>
+                </div>
+    
+    <p style="margin:25px;">Are you sure you want to delete Recovery <br>Id:  {{ recovery.id }}<br>Name:    {{ recovery.customer }}<br>Total Sales: {{ recovery.total_amount }}<br>Current payment: {{ recovery.amount_received }}<br></p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <button type="submit" class="btn btn-success btn-block">Delete</button>
+        <br>
+    </form>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

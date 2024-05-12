@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block shopsactive %} active {% endblock shopsactive %}
+{% block extra_head %} <style>
+    /* Custom styling for first and last buttons */
+    .paginate_button.first,
+    .paginate_button.last {
+        background-color: #b5f795; /* Change to your desired color */
+        color: #fff; /* Change to your desired text color */
+        border-color: #007bff; /* Change to your desired border color */
+    }
+</style>{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4 px-0">
+    <h6 class="card-title bg-success text-white center text-center py-2">Shops List </h6>
+    <!-- Link to Add Shop page -->
+    <a href="{% url 'add_shop' %}" class="btn btn-primary mb-3">Add Shop</a>
+    <!-- Search form -->
+    {% comment %} <form method="GET" action="{% url 'shop_list' %}" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Search by Name, address, owner_number, owner_cnic" value="{{ request.GET.q }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form> {% endcomment %}
+    <!-- Table to display shops data -->
+    <table id="shops-table" class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Shop Name</th>
+                <th>Shop Address</th>
+                <th>Shop Owner's Number</th>
+                <th>Shop Owner's CNIC</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for shop in shops %}
+            <tr>
+                <td>{{shop.id}}</td>
+                <td>{{ shop.name }}</td>
+                <td>{{ shop.address }}</td>
+                <td>{{ shop.owner_number }}</td>
+                <td>{{ shop.owner_cnic }}</td>
+                <td><a href="{% url 'edit_shop' shop.id %}" class="btn btn-sm btn-primary">Edit</a></td>
+                <td><a href="{% url 'delete_shop' shop.id %}" class="btn btn-sm btn-danger">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block custom_js %}
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#shops-table').DataTable({
+            "pagingType": "full_numbers", // Use full pagination controls
+            "pageLength": 10, // Show 10 entries per page
+            "lengthMenu": [10, 25, 50, 75, 100], // Entries per page options
+            "language": {
+                "paginate": {
+                    "previous": "«",
+                    "next": "»"
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+

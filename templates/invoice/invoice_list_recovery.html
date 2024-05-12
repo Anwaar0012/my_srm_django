@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                    <h6 style="font-size:1.5rem; text-align:center;"><strong>Summary of Total Sales for Recoveries</strong></h6>
+                <div class="card-body">
+                    <a href="{% url 'invoice:invoice-create' %}" class="btn btn-lg btn-primary  mb-3">Add New Sale</a>
+                    <div class="table-responsive">
+                        <table id="invoicelist-table" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Sr</th>
+                                    <th>Customer</th>
+                                    <th>Total Sales (Rs)</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for customer_total in customer_totals %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ customer_total.customer }}</td>
+                                    <td>{{ customer_total.total_amount }}</td>
+                                    <td><a href="{% url 'invoice:create-recovery' customer_name=customer_total.customer %}" class="btn btn-lg btn-success">Pay Please</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_js %}
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#invoicelist-table').DataTable({
+            "pagingType": "full_numbers", // Use full pagination controls
+            "lengthMenu": [10, 25, 50, 75, 100], // Entries per page options
+            "language": {
+                "paginate": {
+                    "previous": "«",
+                    "next": "»"
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

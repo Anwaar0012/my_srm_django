@@ -1,0 +1,60 @@
+<!DOCTYPE html>{% load static %}
+<html lang="en">
+{% comment %} {% block head %} {% endcomment %}
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Page title -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    {% block custom_css %}
+    {% endblock %}
+   
+    {% block extra_head %}{% endblock %}
+</head>
+{% comment %} {% endblock head %} {% endcomment %}
+<body>
+    <!-- Navbar -->
+    {% include 'navbar.html' %}
+    <!-- Heading -->
+    <h1 class="heading" style="background-color:#008080; color:#fff; padding:3px; text-align:center; font-size:1rem">Sales Person Relationship Management System</h1>
+    <!-- Below Navbar Content -->
+
+    <!-- Content -->
+    <div class="container d-flex flex-column min-vh-100">
+        
+        {% block below_navbar %}{% endblock %}
+        
+        <!-- Main Content -->
+        {% block content %}{% endblock %}
+    </div>
+
+
+
+    <footer class="heading" style="background-color:black; color:#fff;  margin-top:50px; text-align:center; font-size:1.0rem">
+        <div style="padding:5px; ">
+        <p class="">Copyright (c) All rights reserved , Developed by Muhammad Anwaar (03012476595)</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    {% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> {% endcomment %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Custom JS -->
+    {% block custom_js %}
+    {% endblock %}
+    {% block extra_scripts %}{% endblock extra_scripts %}
+</body>
+</html>
+
+
+
+
+
+

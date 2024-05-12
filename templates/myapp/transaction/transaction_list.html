@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block transactionsactive %} active {% endblock %}
+{% block extra_head %} <style>
+    /* Custom styling for first and last buttons */
+    .paginate_button.first,
+    .paginate_button.last {
+        background-color: #b5f795; /* Change to your desired color */
+        color: #fff; /* Change to your desired text color */
+        border-color: #007bff; /* Change to your desired border color */
+    }
+</style>{% endblock %}
+{% block content %}
+<h6 class="card-title bg-success text-white center text-center py-2">Transactions </h6>
+
+{% comment %} <a href="{% url 'invoice/create/' %}" class="btn btn-primary mb-3">Add New Transaction</a> {% endcomment %}
+<div class="container-fluid mt-4 px-0">
+    <!-- Search form -->
+    <form method="GET" action="{% url 'transaction_list' %}" class="mb-3">
+        <!-- <div class="form-row my-2">
+        <div class="col">
+            <label for="searchbyName"><b>Search by customer/Shop Name, salesperson, manager, or date (YYYY-MM-DD)</b></label>
+            <input type="text" name="q" class="form-control" placeholder="Search by customer Name, salesperson, manager, or date (YYYY-MM-DD)" value="{{ request.GET.q }}">
+        </div>
+    </div>  -->
+        <div class="form-row">
+            <div class="col-auto">
+                <label for="fromDate"><b>From</b></label>
+                <input type="date" name="start_date" class="form-control" placeholder="Start Date" value="{{ request.GET.start_date }}">
+            </div>
+            <div class="col-auto">
+                <label for="toDate"><b>To</b></label>
+                <input type="date" name="end_date" class="form-control" placeholder="End Date" value="{{ request.GET.end_date }}">
+            </div>
+        </div>
+        <div class="input-group">
+            <button type="submit" class="btn btn-warning mt-2">Search</button>
+        </div>
+    </form> 
+
+    <!-- Table to display transactions data -->
+    <a href="{% url 'invoice:invoice-create' %}" role="button" class="btn btn-primary my-2 mx-2 my-sm-0" type="submit">Add New Transaction</a>
+    <div class="table-responsive">
+        <table  id="transactions-table" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Routings</th>
+                    <th>Shop</th>
+                    <th>Manager</th>
+                    <th>Sales Person</th>
+                    <th>Date</th>
+                    <th>Sales (Rs)</th>
+                    <th>Payments (Rs)</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.id}}</td>
+                    <td>{{ transaction.routing }}</td>
+                    <td>{{ transaction.customer }}</td>
+                    <td>{{ transaction.manager }}</td>
+                    <td>{{ transaction.salesperson }}</td>
+                    <td>{{ transaction.due_date }}</td>
+                    <td>{{ transaction.total_amount }}</td>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.balance }}</td>
+                    {% comment %} <td>
+                        <!-- Add your delete button here -->
+                    </td> {% endcomment %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block custom_js %}
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#transactions-table').DataTable({
+            "pagingType": "full_numbers", // Use full pagination controls
+            "pageLength": 10, // Show 10 entries per page
+            "lengthMenu": [10, 25, 50, 75, 100], // Entries per page options
+            "language": {
+                "paginate": {
+                    "previous": "«",
+                    "next": "»"
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+

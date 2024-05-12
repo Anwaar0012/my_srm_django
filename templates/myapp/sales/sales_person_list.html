@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block salespersonsactive %} active {% endblock salespersonsactive %}
+
+{% block content %}
+<div class="container mt-4">
+    <h6 class="card-title bg-success text-white center text-center py-2">Sales Persons List </h6>
+    <!-- Link to Add Sales Person page -->
+    {% comment %} <a href="#" class="btn btn-primary mb-3">Add Sales Person</a> {% endcomment %}
+    <a href="{% url 'add_sales_person' %}" class="btn btn-primary mb-3">Add Sales Person</a>
+
+    <!-- Table to display sales persons data -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Sales Person Name</th>
+                <th>Sales Person Number</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for sales_person in sales_persons %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{ sales_person.name }}</td>
+                <td>{{ sales_person.number }}</td>
+                <td><a href="{% url 'edit_sales_person' sales_person.id %}" class="btn btn-sm btn-primary">Edit</a></td>
+                <td><a href="{% url 'delete_sales_person' sales_person.id %}" class="btn btn-sm btn-danger">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

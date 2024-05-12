@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block blogactive %} active {% endblock blogactive %}
+{% block extra_head %} <style>
+    /* Custom styling for first and last buttons */
+    .paginate_button.first,
+    .paginate_button.last {
+        background-color: #b5f795; /* Change to your desired color */
+        color: #fff; /* Change to your desired text color */
+        border-color: #007bff; /* Change to your desired border color */
+    }
+</style>{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h6 class="card-title bg-success text-white center text-center py-2">Routings / Route Mapping List </h6>
+    <!-- Link to Add Routing page -->
+    <a href="{% url 'add_routing' %}" class="btn btn-primary mb-3">Add Routing</a>
+
+    <!-- Table to display routings data -->
+    <div class="table-responsive">
+    <table id="routing-table" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Routing</th>
+                <th>Routing Note</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dummy data -->
+            {% for routing in routings  %}
+            <tr>
+                <td>{{routing.id}}</td>
+                <td>{{routing.routing}}</td>
+                <td>{{routing.routing_note}}</td>
+
+                
+                <td><a href="{% url 'edit_routing' routing.id %}" class="btn btn-sm btn-primary">Edit</a></td>
+                <td><a href="{% url 'delete_routing' routing.id %}" class="btn btn-sm btn-danger">Delete</a></td>
+            </tr>
+            {% endfor %}
+           
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block custom_js %}
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#routing-table').DataTable({
+            "pagingType": "full_numbers", // Use full pagination controls
+            "pageLength": 10, // Show 10 entries per page
+            "lengthMenu": [10, 25, 50, 75, 100], // Entries per page options
+            "language": {
+                "paginate": {
+                    "previous": "«",
+                    "next": "»"
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Manager Approval</h1>
+    <!-- Display Recovery and Invoice data -->
+    <h3>Recovery Data</h3>
+    <p>Customer: {{ recovery.customer }}</p>
+    <p>Total Sale Amount: {{ recovery.total_amount }}</p>
+    <p>Order Date: {{ recovery.date }}</p>
+    <p>Payment Received: {{ recovery.amount_received }}</p>
+    <p>Payment Date: {{ recovery.received_date }}</p>
+    <p>Approval/Confirmation: 
+        {% if recovery.approved_by_manager %}
+            <span class="badge badge-success">Approved</span>
+        {% else %}
+            <span class="badge badge-warning">Pending</span>
+        {% endif %}
+    </p>
+    <hr>
+    <h3>Invoice Data</h3>
+    <p>Customer: {{ invoice.customer }}</p>
+    <!-- Add other fields from Invoice model as needed -->
+    
+    <!-- Tick option for Manager Approval -->
+    <form id="managerApprovalForm"  action="{% url 'invoice:manager_approval' recovery.id invoice.id %}" method="post">
+        {% csrf_token %}
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="manager_approval_checkbox" name="manager_approval_checkbox">
+            <label class="form-check-label" for="manager_approval_checkbox">Manager Approval</label>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    </form>
+</div>
+{% endblock %}
+{% block custom_js %}
+<<script>
+    // Function to handle form submission
+    function handleSubmit(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Serialize form data
+        var formData = new FormData(document.getElementById("managerApprovalForm"));
+
+        // Submit form data asynchronously via Ajax
+        fetch("{% url 'invoice:manager_approval' recovery.id invoice.id %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Redirect to the desired URL if form submission is successful
+                window.location.href = "{% url 'invoice:recovery-list' %}";
+            } else {
+                // Handle errors or display error messages
+                console.error('Form submission failed:', response.statusText);
+            }
+        })
+        .catch(error => {
+            console.error('Error during form submission:', error);
+        });
+    }
+
+    // Attach event listener to the form submission
+    document.getElementById("managerApprovalForm").addEventListener("submit", handleSubmit);
+</script>
+    {% endblock %}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Transaction</title>
+</head>
+<body>
+    <h1>Create Transaction</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="recovery_id">Recovery ID:</label>
+        <input type="text" id="recovery_id" name="recovery_id" required><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

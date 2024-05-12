@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block daysactive %} active {% endblock daysactive %}
+
+{% block content %}
+<div class="container mt-4">
+    <h4 class="card-title bg-success text-white center text-center py-3">Days List </h4>
+    <!-- Link to Add Days page -->
+    <a href="{% url 'add_days' %}" class="btn btn-primary mb-3">Add Days</a>
+
+    <!-- Table to display days data -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Day Name</th>
+                <th>Day Notes</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dummy data -->
+            
+            {% for day in days_fetched %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{ day.day_name }}</td>
+                <td>{{ day.day_notes }}</td>
+                <td><a href="{% url 'edit_day' day.id %}" class="btn btn-sm btn-primary">Edit</a></td>
+                <td><a href="{% url 'delete_day' day.id %}" class="btn btn-sm btn-danger">Delete</a></td>
+            </tr>
+            {% endfor %} 
+        </tbody>
+    </table>
+</div>
+{% endblock %}

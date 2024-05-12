@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+{% block blogactive %} active {% endblock blogactive %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1>Welcome to My Shop!</h1>
+  <hr class="my-4">
+  
+  <div class="row">
+    <div class="col-md-3 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Total Sales </h5>
+          <p class="card-text">Rs.{{ total_sales }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Total Payments</h5>
+          <p class="card-text">Rs.{{ total_payments }}</p>
+        </div>
+      </div>
+    </div>
+    {% comment %} <div class="col-md-3 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Total Returns Amount</h5>
+          <p class="card-text">Rs.{{ total_returns }}</p>
+        </div>
+      </div>
+    </div> {% endcomment %}
+    <div class="col-md-3 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Total Balance </h5>
+          <p class="card-text">Rs.{{ total_balance }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% comment %} {% extends 'base.html' %}
+{% block title %}Home{% endblock title%}
+{% block blogactive %} active {% endblock blogactive %}
+
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">Welcome to My Shop!</h1>
+
+  <hr class="my-4">
+  <div class="container mt-4">
+  
+    <h1>Cash Transactions</h1>
+    <p>Total sales Amount: Rs.{{ total_sales }}</p>
+    <p>Total Payments: Rs.-{{ total_payments }}</p>
+    <p>Total Returns Amount: Rs.-</p>
+    <p>Total Balance Amount: Rs.{{ total_balance }}</p>
+</div>
+</div>
+{% endblock %} {% endcomment %}
+

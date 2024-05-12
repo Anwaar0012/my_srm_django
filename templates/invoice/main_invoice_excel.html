@@ -1,0 +1,80 @@
+<!-- your_template.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice Report</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            Invoice Report
+          </div>
+          <div class="card-body">
+            <form method="post" action="{% url 'invoice:generate_invoice_report' %}">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="report_type" class="form-label">Report Type</label>
+                <select class="form-select" id="report_type" name="report_type">
+                  <option value="all">All Data</option>
+                  <option value="by_manager">By Manager</option>
+                  <option value="by_salesman">By Salesman</option>
+                  <option value="between_dates">Between Dates</option>
+                </select>
+              </div>
+            <div id="manager_name_field" class="mb-3 d-none">
+              <label for="manager_name" class="form-label">Manager Name</label>
+              <input type="text" class="form-control" id="manager_name" name="manager_name">
+            </div>
+            <div id="salesman_name_field" class="mb-3 d-none">
+              <label for="salesman_name" class="form-label">Salesman Name</label>
+              <input type="text" class="form-control" id="salesman_name" name="salesman_name">
+            </div>
+            <div id="date_range_fields" class="mb-3 d-none">
+              <label for="start_date" class="form-label">Start Date</label>
+              <input type="date" class="form-control" id="start_date" name="start_date">
+              <label for="end_date" class="form-label mt-2">End Date</label>
+              <input type="date" class="form-control" id="end_date" name="end_date">
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Excel Report</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Bootstrap JS (Optional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.getElementById('report_type').addEventListener('change', function() {
+    var managerNameField = document.getElementById('manager_name_field');
+    var salesmanNameField = document.getElementById('salesman_name_field');
+    var dateRangeFields = document.getElementById('date_range_fields');
+    if (this.value === 'by_manager') {
+      managerNameField.classList.remove('d-none');
+      salesmanNameField.classList.add('d-none');
+      dateRangeFields.classList.add('d-none');
+    } else if (this.value === 'by_salesman') {
+      managerNameField.classList.add('d-none');
+      salesmanNameField.classList.remove('d-none');
+      dateRangeFields.classList.add('d-none');
+    } else if (this.value === 'between_dates') {
+      managerNameField.classList.add('d-none');
+      salesmanNameField.classList.add('d-none');
+      dateRangeFields.classList.remove('d-none');
+    }
+  });
+</script>
+</body>
+</html>
+
+
+
+
+
